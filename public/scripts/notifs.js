@@ -13,6 +13,8 @@ const postBtn = document.getElementById('postnotif');
 const removeBtn = document.getElementById('removeBtn1');
 
 const database = firebase.database();
+//was not here before
+var postId;
 
 function timedRefresh(timeoutPeriod) {
 	setTimeout("location.reload(true);",timeoutPeriod);
@@ -41,8 +43,10 @@ postBtn.addEventListener('click', (e) => {
     }
 
     var newPostRef = database.ref('/notifications/').push();
-    // var postId = newPostRef.key;
-    if(notifBody.value != '' && notifTitle.value != ''){
+    //was commented out before
+    postId = newPostRef.key;
+
+    if(notifBody.value != '' && notifTitle.value != '' && topic.value != "testing"){
         newPostRef.set({
             notificationArticleID: notifID.value,
             notificationBody: notifBody.value,
@@ -54,7 +58,7 @@ postBtn.addEventListener('click', (e) => {
         M.toast({html: 'Sent Notification!', classes: 'rounded'}); 
         timedRefresh(1000);
     }else{
-        M.toast({html: 'Missing input(s)!', classes: 'rounded'}); 
+        M.toast({html: 'Missing input(s)! If testing, it was sent!', classes: 'rounded'}); 
     }
 
 });
@@ -77,11 +81,12 @@ removeBtn1.addEventListener('click', (e) => {
     
 });
 
-var postId; 
+//IMPORTANT: WAS NOT COMMENTED BEFORE
+// var postId; 
 
- database.ref('notifications').once('child_changed', snapshot => {
-     postId = snapshot.key;
- });
+//  database.ref('notifications').once('child_changed', snapshot => {
+//      postId = snapshot.key;
+//  });
 
  function timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
